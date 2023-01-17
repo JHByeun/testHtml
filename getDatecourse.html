@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>데이트 코스 상세</title>
+  <style>
+    /* 공통 */
+    /* 구글 웹 폰트 사용 - Noto Sans Korean */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+    body {
+      /* 구글 웹 폰트 사용 - Noto Sans Korean */
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    /* 메인 타이틀 영역 */
+    #datecourse-detail-container {
+      margin: 0 auto;
+      width: 1200px;
+    }
+
+    #datecourse-detail-container h1 {
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    /* 메인 이미지 영역 */
+
+    #datecourse-img-container{
+      margin-bottom: -50px;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* 데이트코스 설명 영역 */
+    
+    #datecourse-main-info{
+      text-align: center;
+      margin: 0 auto;
+      width: 500px;
+    }
+
+    /* 데이트코스 상세정보 영역*/
+    #datecourse-sub-info{
+      margin: auto;
+      text-align: left;
+      margin-top: 20px;
+      width: 900px;
+      height: auto;
+    }
+    .datecourse-line{
+      width: 900px;
+      height: 70px;
+    }
+    .sub-img{
+      line-height: 80px;
+      float: left; width: 20%;
+      width: 50px;
+      height: 50px;
+    }
+    .sub-title{
+      float: left; width: 40%;
+      margin-right: 10px;
+      width: 150px;
+      height: 50px;
+    }
+    .sub-info{
+      line-height: 20px;
+      float: left; width: 40%;
+      white-space: nowrap;
+      margin-right: 10px;
+      width: 350px;
+    }
+
+    /* 데이트코스 검색 */
+    .searchDatecourse{
+    }
+
+    /* 메뉴 이미지 영역 */
+
+    #menu-img-container{
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* 데이트코스 위치 맵 영역 */
+    #datecourse-map-container{
+      margin: auto;
+      margin-bottom: 30px;
+      width: 500px;
+      height: 300px;
+      border: 1px solid black;
+    }
+
+    /*데이트코스 댓글 영역 */
+    #datecourse-comment-container{
+      margin: auto;
+      text-align: left;
+      width: 1000px;
+    }
+    .comment-container{
+      margin: auto;
+      width: 800px;
+    }
+    .comment-user{
+      float: left; width: 20%;
+      border: 1px solid white;
+      width: 100px;
+      height: 30px;
+      text-align: center;
+    }
+    .comment-regdate{
+      float: left; width: 20%;
+      border: 1px solid white;
+      width: 100px;
+      height: 30px;
+      text-align: center;
+    }
+    .comment-comment{
+      float: left; width: 80%;
+      border: 1px solid white;
+      width: 700px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    #toc-content {
+    display: none;
+  }
+  #toc-toggle {
+    cursor: pointer;
+    color: #2962ff;
+  }
+  #toc-toggle:hover {
+    text-decoration: underline;
+  }
+
+  /* 버튼 */
+  .btn1 {
+    float: right;
+    margin-top: 15px;
+        width:130px;
+        min-height: 2.5rem;
+        border: none;
+        background: rgb(238, 45, 122);;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    
+    .btn_inner {
+        font-weight: bold;
+        border-radius: 64px;
+        justify-content: center;
+        text-align: center;
+        display: block;
+    }
+
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+  <script>
+    /* 메인 이미지 슬라이드 */
+    $(document).ready(function(){
+      $('#main-img').bxSlider({
+        slideWidth: 800,        // 이미지의 너비
+        // slideHeight: 500,    // 이미지의 높이
+        maxSlides : 1,          // 이미지의 최대 노출 개수
+        minSlides : 1,          // 이미지의 최소 노출 개수
+        moveSlides : 1,         // 이미지의 이동 개수
+        autoHover: true,        // 마우스오버시에 멈춤, 기본값: false
+        pager:false,            // 블릿의 유무, 기본값: true
+        stopAutoOnClick: true,  // 블릿을 클릭한 후 슬라이드 정지 유무, 기본값 false
+        controls:  true,       // 화살표 버튼 유무, 기본값: false
+       });
+      });
+
+      /* 메뉴 이미지 슬라이드 */
+      $(document).ready(function() {
+      $("#menu-img").bxSlider({
+        slideWidth: 150,        // 이미지의 너비
+        maxSlides : 3,          // 이미지의 최대 노출 개수
+        minSlides : 2,          // 이미지의 최소 노출 개수
+        moveSlides : 1,         // 이미지의 이동 개수
+        slideMargin: 20,        // 이미지 사이의 마진
+        pager:false,            // 블릿의 유무, 기본값: true
+        infiniteLoop:false,     // 슬라이더 무한루프 여부
+        hideControlOnEnd: true, // 슬라이더 첫번재 마지막 버튼 감추기
+        controls:  true,       // 화살표 버튼 유무, 기본값: false
+      })    
+    })
+  </script>
+</head>
+<body>
+  <div id="datecourse-detail-container">
+    <h1>쉐이크쉑 강남점</h1>
+  </div>
+
+  <!-- 메인 이미지 영역 -->
+  <div id="datecourse-img-container">
+    <div id="main-img">
+      <div>
+        <a href="#"><img src="/images/sheck1.jpg" title="" width="800" height="500"></a>
+      </div>
+      <div>
+        <a href="#"><img src="/images/sheck2.jpg" title="" width="800" height="500"></a>
+      </div>
+      <div>
+        <a href="#"><img src="/images/sheck3.jpg" title="" width="800" height="500"></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 데이트코스 설명 부분 -->
+  <div id="datecourse-main-info">
+    <div id="main-info">
+      <h2>잘 구워진 패티에서 육즙이 팡팡! 신선한 재료가 돋보이는 감칠맛 가득한 미국 정통 수제버거 맛집</h2><br>
+    </div>
+  </div>
+
+  <!-- 구분선 -->
+  <hr width="1100">
+
+  <!-- 데이트코스 서브 정보 -->
+  <div id="datecourse-sub-info">
+    <div class="datecourse-line">
+      <div class="sub-img">
+        <img src="/images/address.png" width="30" height="30">
+      </div>
+      <div class="sub-title">
+        <h3>주소</h3>
+      </div>
+      <div class="sub-info">
+        <h5>서울 강남구 강남대로 452</h5>
+      </div>
+      <button type="button" class="btn1" id="datecourseAdd">
+                <span class="btn_inner">데이트 코스에 추가</span>
+                </button>
+    </div>
+    <div class="datecourse-line">
+      <div class="sub-img">
+        <img src="/images/tel.png" width="30" height="30">
+      </div>
+      <div class="sub-title">
+        <h3>전화번호</h3>
+      </div>
+      <div class="sub-info">
+        <h5>02-553-5576</h5>
+      </div>
+          <!-- 데이트코스 검색 -->
+          <div id="searchDatecourse">
+            <div style="padding-top: 20px;">
+              <button type="button" id="searchNaver" style="height: 35px; float: right; background-color: white; border: 0px; cursor: pointer; font-size: medium; font: bold;">
+                <span>검색</span>
+              </button>
+            </div>
+            <div style="width: 150px; height: 30px; margin-right: 10px; border: 3px solid #03C75A; float: right;">
+              <h4 style="margin: auto; padding-left: 10px;">데이트 코스 명</h4><img src="/images/expand.PNG" style="float: right; margin-top: -20px;">
+            </div>
+            <div style="float: right; margin-right: 10px;">
+              <img src="/images/search.png" width="30" height="30">
+            </div>
+          </div>
+
+    </div> 
+    <div class="datecourse-line">
+      <div class="sub-img">
+        <img src="/images/site.png" width="30" height="30">
+      </div>
+      <div class="sub-title">
+        <h3>웹 사이트</h3>
+      </div>
+      <div class="sub-info">
+        <a href="#"><h5>www.shakeshack.kr</h5></a>
+      </div>
+    </div>   
+    <div class="datecourse-line">
+      <div class="sub-img">
+        <img src="/images/park.png" width="30" height="30">
+      </div>
+      <div class="sub-title">
+        <h3>주차</h3>
+      </div>
+      <div class="sub-info">
+        <h5>가능</h5>
+      </div>
+    </div>   
+    <div class="datecourse-line">
+      <div class="sub-img">
+        <img src="/images/time.png" width="30" height="30">
+      </div>
+      <div class="sub-title">
+        <h3>영업 정보</h3>
+      </div>
+      <div class="sub-info">
+        <h5>10:23 ~ 23:00</h5>
+      </div>
+    </div>   
+    <div class="datecourse-line">
+      <div class="sub-img">
+        <img src="/images/menu.png" width="30" height="30">
+      </div>
+      <div class="sub-title">
+        <h3>메뉴</h3>
+      </div>
+      <div class="sub-info">
+        <h5>쉑버거</h5>
+        <h5>쉑버거</h5>
+        <h5>쉑버거</h5>
+        <h5>쉑버거</h5>
+        <h5>쉑버거</h5>
+        <h5>쉑버거</h5>
+        <h5>쉑버거</h5>
+      </div>
+    </div>          
+  </div>
+
+    <!-- 메뉴 이미지 영역 -->
+    <div id="menu-img-container">
+      <div id="menu-img">
+        <div>
+          <a href="#"><img src="/images/burger1.jpg" title="" width="800" height="100"></a>
+        </div>
+        <div>
+          <a href="#"><img src="/images/burger2.jpg" title="" width="800" height="100"></a>
+        </div>
+        <div>
+          <a href="#"><img src="/images/burger3.jpg" title="" width="800" height="100"></a>
+        </div>
+        <div>
+          <a href="#"><img src="/images/burger4.jpg" title="" width="800" height="100"></a>
+        </div>
+        <div>
+          <a href="#"><img src="/images/burger5.jpg" title="" width="800" height="100"></a>
+        </div>
+        <div>
+          <a href="#"><img src="/images/burger6.jpg" title="" width="800" height="100"></a>
+        </div>
+        <div>
+          <a href="#"><img src="/images/burger7.jpg" title="" width="800" height="100"></a>
+        </div>
+      </div>
+    </div>
+  
+  <!-- 맵 영역 -->
+  <div id="datecourse-map-container">
+
+  </div>
+  
+  <!-- 구분선 -->
+  <hr width="1100">
+
+  <!-- 댓글 영역 -->
+  <div id="datecourse-comment-container"><h2>댓글</h2>
+    <div class="comment-container">
+      <div class="comment-user">
+        <a>user0001</a>
+      </div>
+      <div class="comment-regdate">
+        <a>2022-12-23</a>
+      </div>
+      <div class="comment-comment">
+        <p>『훈민정음』(訓民正音, 중세 한국어: 훈민정음)은 한글의 옛 이름(첫 이름)으로 세종대왕이 창제한 문자의 명칭이자 훈민정음의 창제 원리와 사용법 등을 해설해 놓은 책의 제목이기도 하다. 세종 25년(1443년)에 창제 된 후 1446년(세종 28년)에 반포된 훈민정음의 뜻은 '백성(民)을 가르치는(訓) 바른(正) 소리(音)'이며, 28개의 낱자로 구성되어 있다. 소리글자에 속하며, 배우기 쉽고 읽고 쓰기에 편리한 장점을 가지고 있다. 이 훈민정음이 우리가 지금 사용하고 있는 한글이며,</p>
+      </div>
+    </div>
+    
+    <div class="comment-container">
+      <div class="comment-user">
+        <a>user0001</a>
+      </div>
+      <div class="comment-regdate">
+        <a>2022-12-23</a>
+      </div>
+      <div class="comment-comment">
+        <p>『훈민정음』(訓民正音, 중세 한국어: 훈민정음)은 한글의 옛 이름(첫 이름)으로 세종대왕이 창제한 문자의 명칭이자 훈민정음의 창제 원리와 사용법 등을 해설해 놓은 책의 제목이기도 하다. 세종 25년(1443년)에 창제 된 후 1446년(세종 28년)에 반포된 훈민정음의 뜻은 '백성(民)을 가르치는(訓) 바른(正) 소리(音)'이며, 28개의 낱자로 구성되어 있다. 소리글자에 속하며, 배우기 쉽고 읽고 쓰기에 편리한 장점을 가지고 있다. 이 훈민정음이 우리가 지금 사용하고 있는 한글이며,</p>
+      </div>
+    </div>
+    <div class="comment-container">
+      <div class="comment-user">
+        <a>user0001</a>
+      </div>
+      <div class="comment-regdate">
+        <a>2022-12-23</a>
+      </div>
+      <div class="comment-comment">
+        <p>『훈민정음』(訓民正音, 중세 한국어: 훈민정음)은 한글의 옛 이름(첫 이름)으로 세종대왕이 창제한 문자의 명칭이자 훈민정음의 창제 원리와 사용법 등을 해설해 놓은 책의 제목이기도 하다. 세종 25년(1443년)에 창제 된 후 1446년(세종 28년)에 반포된 훈민정음의 뜻은 '백성(民)을 가르치는(訓) 바른(正) 소리(音)'이며, 28개의 낱자로 구성되어 있다. 소리글자에 속하며, 배우기 쉽고 읽고 쓰기에 편리한 장점을 가지고 있다. 이 훈민정음이 우리가 지금 사용하고 있는 한글이며,</p>
+      </div>
+    </div>
+    <div class="comment-container">
+      <div class="comment-user">
+        <a>user0001</a>
+      </div>
+      <div class="comment-regdate">
+        <a>2022-12-23</a>
+      </div>
+      <div class="comment-comment">
+        <p>『훈민정음』(訓民正音, 중세 한국어: 훈민정음)은 한글의 옛 이름(첫 이름)으로 세종대왕이 창제한 문자의 명칭이자 훈민정음의 창제 원리와 사용법 등을 해설해 놓은 책의 제목이기도 하다. 세종 25년(1443년)에 창제 된 후 1446년(세종 28년)에 반포된 훈민정음의 뜻은 '백성(民)을 가르치는(訓) 바른(正) 소리(音)'이며, 28개의 낱자로 구성되어 있다. 소리글자에 속하며, 배우기 쉽고 읽고 쓰기에 편리한 장점을 가지고 있다. 이 훈민정음이 우리가 지금 사용하고 있는 한글이며,</p>
+      </div>
+    </div>
+  </div>
+  
+</body> 
+  
+</html>
